@@ -8,6 +8,7 @@ export interface GeneratedRoutes {
       [Endpoint]: {
         "GET": {
           "response": { status: 'ok' }
+          "operation": 'health'
         }
       }
     }
@@ -57,6 +58,7 @@ export interface GeneratedRoutes {
     "/ping": {
       [Endpoint]: Record<HTTPMethod, {
         "response": 'pong'
+        "operation": 'ping'
       }>
     }
     "/search": {

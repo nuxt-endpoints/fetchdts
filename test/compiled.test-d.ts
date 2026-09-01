@@ -1,5 +1,5 @@
-import type { AnyFetchPath, AnyHTTPMethod } from '../src/inference'
-import type { ErrorBody, Methods, Path, RequestBody, RequestQuery, Requires, Response, ResponseHeaders, ValidInput } from './fixture/generated'
+import type { AnyFetchPath, AnyHTTPMethod, TypedFetchMetadataField } from '../src/inference'
+import type { ErrorBody, GeneratedRoutes, Methods, Path, RequestBody, RequestQuery, Requires, Response, ResponseHeaders, ValidInput } from './fixture/generated'
 import type { Response as ExtensibleResponse, ValidInput as ExtensibleValid } from './fixture/generated-extensible'
 import { describe, expectTypeOf, it } from 'vitest'
 import './fixture/extensible-augmented'
@@ -157,6 +157,13 @@ describe('accessors resolving against an extensible interface', () => {
     expectTypeOf(await extensibleFetch('/api/users/1/posts')).toEqualTypeOf<{ title: string }[]>()
     // @ts-expect-error still nothing else
     await extensibleFetch('/api/nope')
+  })
+})
+
+describe('compiler-consumer metadata', () => {
+  it('retains an augmented field in the generated fixture', () => {
+    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/health', 'operation'>>().toEqualTypeOf<'health'>()
+    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/ping', 'operation', 'DELETE'>>().toEqualTypeOf<'ping'>()
   })
 })
 

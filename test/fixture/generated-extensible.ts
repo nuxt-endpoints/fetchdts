@@ -9,6 +9,7 @@ export interface CompiledRoutes {
       [Endpoint]: {
         "GET": {
           "response": { status: 'ok' }
+          "operation": 'health'
         }
       }
     }
@@ -58,6 +59,7 @@ export interface CompiledRoutes {
     "/ping": {
       [Endpoint]: Record<HTTPMethod, {
         "response": 'pong'
+        "operation": 'ping'
       }>
     }
     "/search": {
