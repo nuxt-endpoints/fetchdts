@@ -13,8 +13,14 @@
   "repository": "unjs/fetchdts",
   "sideEffects": false,
   "exports": {
-    ".": "./src/index.ts",
-    "./compiler": "./src/compiler.ts",
+    ".": {
+      "fetchdts-src": "./src/index.ts",
+      "default": "./dist/index.mjs"
+    },
+    "./compiler": {
+      "fetchdts-src": "./src/compiler.ts",
+      "default": "./dist/compiler.mjs"
+    },
     "./package.json": "./package.json"
   },
   "types": "./dist/index.d.mts",
