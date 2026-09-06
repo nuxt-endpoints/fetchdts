@@ -8,6 +8,7 @@ export interface GeneratedRoutes {
       [Endpoint]: {
         "GET": {
           "response": { status: 'ok' }
+          "operation": 'health'
         }
       }
     }
@@ -24,17 +25,20 @@ export interface GeneratedRoutes {
           "GET": {
             "response": { id: number, name: string }
             "responseHeaders": { 'x-cache': 'hit' | 'miss' }
+            "operation": { kind: 'detail' }
           }
         }
       }
       [Endpoint]: {
         "GET": {
           "response": { id: number }[]
+          "operation": { kind: 'list' }
         }
         "POST": {
           "body": { name: string }
           "response": { id: number }
           "errorResponse": { message: string }
+          "operation": { kind: 'create' }
         }
       }
     }
@@ -57,11 +61,13 @@ export interface GeneratedRoutes {
     "/ping": {
       [Endpoint]: Record<HTTPMethod, {
         "response": 'pong'
+        "operation": 'ping'
       }>
     }
     "/search": {
       [Endpoint]: Record<Exclude<HTTPMethod, "POST">, {
         "response": { results: string[] }
+        "operation": 'search'
       }> & {
         "POST": {
           "body": { query: string }

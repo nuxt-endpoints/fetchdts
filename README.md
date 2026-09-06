@@ -471,6 +471,39 @@ where a merged route reaches neither.
 Method names are uppercased, as a router compares them case-insensitively, and a route with no
 segments is emitted as `'/'`.
 
+### Consumer-owned metadata
+
+A compiler integration can register additional metadata fields without asking fetchdts to
+interpret them. Augment the compiler-owned registry once, then read the concrete field type from
+the generated route tree:
+
+```ts
+import type { TypedFetchMetadataField } from 'fetchdts'
+import type { Route } from 'fetchdts/compiler'
+
+declare module 'fetchdts/compiler' {
+  interface RouteMetadataExtension {
+    contract: unknown
+  }
+}
+
+const route = {
+  segments: ['/users'],
+  metadata: {
+    GET: {
+      responseType: 'User',
+      contractType: '{ cache: true }',
+    },
+  },
+} satisfies Route
+
+type Contract<Routes> = TypedFetchMetadataField<Routes, '/users', 'contract'>
+```
+
+The registry controls which `*Type` fields the compiler accepts; it does not constrain the emitted
+type source to `unknown`. Unknown fields remain type errors. Extension fields use the same path,
+method, `ALL`, ambiguity, and fallback resolution as built-in metadata.
+
 Route segments, method names and metadata fields come from whatever generated them, so every lookup
 table built from them has a null prototype, a metadata value that is not a string is skipped, and an
 interface name, a module specifier or a segment the compiler cannot emit is a `TypeError` rather than
