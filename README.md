@@ -478,7 +478,7 @@ interpret them. Augment the compiler-owned registry once, then read the concrete
 the generated route tree:
 
 ```ts
-import type { TypedFetchMetadataField } from 'fetchdts'
+import type { TypedFetchResolvedMeta } from 'fetchdts'
 import type { Route } from 'fetchdts/compiler'
 
 declare module 'fetchdts/compiler' {
@@ -497,7 +497,8 @@ const route = {
   },
 } satisfies Route
 
-type Contract<Routes> = TypedFetchMetadataField<Routes, '/users', 'contract'>
+type Metadata<Routes> = TypedFetchResolvedMeta<Routes, '/users', 'GET'>
+type Contract<Routes> = Metadata<Routes> extends { contract: infer Value } ? Value : never
 ```
 
 The registry controls which `*Type` fields the compiler accepts; it does not constrain the emitted

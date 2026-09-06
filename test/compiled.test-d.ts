@@ -1,4 +1,4 @@
-import type { AnyFetchPath, AnyHTTPMethod, TypedFetchMetadataField } from '../src/inference'
+import type { AnyFetchPath, AnyHTTPMethod, TypedFetchResolvedMeta } from '../src/inference'
 import type { ErrorBody, GeneratedRoutes, Methods, Path, RequestBody, RequestQuery, Requires, Response, ResponseHeaders, ValidInput } from './fixture/generated'
 import type { Response as ExtensibleResponse, ValidInput as ExtensibleValid } from './fixture/generated-extensible'
 import { describe, expectTypeOf, it } from 'vitest'
@@ -162,16 +162,16 @@ describe('accessors resolving against an extensible interface', () => {
 
 describe('compiler-consumer metadata', () => {
   it('retains registered fields on static and dynamic routes', () => {
-    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/health', 'contract'>>().toEqualTypeOf<'health'>()
-    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/users/123', 'contract'>>().toEqualTypeOf<{ kind: 'detail' }>()
+    expectTypeOf<TypedFetchResolvedMeta<GeneratedRoutes, '/api/health', 'GET'>['contract']>().toEqualTypeOf<'health'>()
+    expectTypeOf<TypedFetchResolvedMeta<GeneratedRoutes, '/api/users/123', 'GET'>['contract']>().toEqualTypeOf<{ kind: 'detail' }>()
   })
 
   it('resolves method-specific fields and preserves ALL replacement semantics', () => {
-    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/users', 'contract'>>().toEqualTypeOf<{ kind: 'list' }>()
-    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/users', 'contract', 'POST'>>().toEqualTypeOf<{ kind: 'create' }>()
-    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/ping', 'contract', 'DELETE'>>().toEqualTypeOf<'ping'>()
-    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/search', 'contract'>>().toEqualTypeOf<'search'>()
-    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/search', 'contract', 'POST', 'missing'>>().toEqualTypeOf<'missing'>()
+    expectTypeOf<TypedFetchResolvedMeta<GeneratedRoutes, '/api/users', 'GET'>['contract']>().toEqualTypeOf<{ kind: 'list' }>()
+    expectTypeOf<TypedFetchResolvedMeta<GeneratedRoutes, '/api/users', 'POST'>['contract']>().toEqualTypeOf<{ kind: 'create' }>()
+    expectTypeOf<TypedFetchResolvedMeta<GeneratedRoutes, '/api/ping', 'DELETE'>['contract']>().toEqualTypeOf<'ping'>()
+    expectTypeOf<TypedFetchResolvedMeta<GeneratedRoutes, '/api/search', 'GET'>['contract']>().toEqualTypeOf<'search'>()
+    expectTypeOf<'contract' extends keyof TypedFetchResolvedMeta<GeneratedRoutes, '/api/search', 'POST'> ? true : false>().toEqualTypeOf<false>()
   })
 })
 

@@ -1,5 +1,5 @@
 import type { Route } from 'fetchdts/compiler'
-import type { DynamicParam, Endpoint, TypedFetchMetadataField } from '../src'
+import type { DynamicParam, Endpoint, TypedFetchResolvedMeta } from '../src'
 import { describe, expectTypeOf, it } from 'vitest'
 
 declare module 'fetchdts/compiler' {
@@ -43,8 +43,8 @@ describe('consumer-owned route metadata', () => {
       }
     }
 
-    expectTypeOf<TypedFetchMetadataField<Routes, '/users', 'contract'>>().toBeNever()
-    expectTypeOf<TypedFetchMetadataField<Routes, '/missing', 'contract', 'GET', 'fallback'>>().toEqualTypeOf<'fallback'>()
+    expectTypeOf<'contract' extends keyof TypedFetchResolvedMeta<Routes, '/users', 'GET'> ? true : false>().toEqualTypeOf<false>()
+    expectTypeOf<TypedFetchResolvedMeta<Routes, '/missing', 'GET'>>().toBeNever()
   })
 
   it('uses fallback unless every ambiguous candidate declares the field', () => {
@@ -61,7 +61,7 @@ describe('consumer-owned route metadata', () => {
       }
     }
 
-    expectTypeOf<TypedFetchMetadataField<PartiallyDeclared, `/users/${string}`, 'contract', 'GET', 'fallback'>>().toEqualTypeOf<'fallback'>()
-    expectTypeOf<TypedFetchMetadataField<FullyDeclared, `/users/${string}`, 'contract', 'GET', 'fallback'>>().toEqualTypeOf<'static' | 'dynamic'>()
+    expectTypeOf<'contract' extends keyof TypedFetchResolvedMeta<PartiallyDeclared, `/users/${string}`, 'GET'> ? true : false>().toEqualTypeOf<false>()
+    expectTypeOf<TypedFetchResolvedMeta<FullyDeclared, `/users/${string}`, 'GET'>['contract']>().toEqualTypeOf<'static' | 'dynamic'>()
   })
 })

@@ -102,15 +102,6 @@ type FetchInputError<Path extends string, Method extends AnyHTTPMethod | ''>
 export type TypedFetchResolvedMeta<Schema, Path, Method extends AnyHTTPMethod | '' = ''>
   = TypedFetchMeta<Schema, Path extends string ? Trimmed<Path> : Path, Method, 'dynamic'>
 
-/**
- * A field carried by the metadata of the endpoint `Path` resolves to.
- *
- * This generic accessor does not assign semantics to the field. It returns `Fallback` when the
- * path does not resolve or the resolved endpoint does not declare `Field`.
- */
-export type TypedFetchMetadataField<Schema, Path, Field extends string, Method extends AnyHTTPMethod | '' = 'GET', Fallback = never>
-  = DeclaredField<Schema, Path, Method, Field, Fallback>
-
 // TODO: optimise me
 type RequestInitFor<Meta> = {
   [K in keyof Omit<RequestInit, 'method' | 'body'>]?: K extends keyof Meta
