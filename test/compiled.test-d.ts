@@ -162,16 +162,16 @@ describe('accessors resolving against an extensible interface', () => {
 
 describe('compiler-consumer metadata', () => {
   it('retains registered fields on static and dynamic routes', () => {
-    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/health', 'operation'>>().toEqualTypeOf<'health'>()
-    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/users/123', 'operation'>>().toEqualTypeOf<{ kind: 'detail' }>()
+    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/health', 'contract'>>().toEqualTypeOf<'health'>()
+    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/users/123', 'contract'>>().toEqualTypeOf<{ kind: 'detail' }>()
   })
 
   it('resolves method-specific fields and preserves ALL replacement semantics', () => {
-    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/users', 'operation'>>().toEqualTypeOf<{ kind: 'list' }>()
-    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/users', 'operation', 'POST'>>().toEqualTypeOf<{ kind: 'create' }>()
-    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/ping', 'operation', 'DELETE'>>().toEqualTypeOf<'ping'>()
-    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/search', 'operation'>>().toEqualTypeOf<'search'>()
-    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/search', 'operation', 'POST', 'missing'>>().toEqualTypeOf<'missing'>()
+    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/users', 'contract'>>().toEqualTypeOf<{ kind: 'list' }>()
+    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/users', 'contract', 'POST'>>().toEqualTypeOf<{ kind: 'create' }>()
+    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/ping', 'contract', 'DELETE'>>().toEqualTypeOf<'ping'>()
+    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/search', 'contract'>>().toEqualTypeOf<'search'>()
+    expectTypeOf<TypedFetchMetadataField<GeneratedRoutes, '/api/search', 'contract', 'POST', 'missing'>>().toEqualTypeOf<'missing'>()
   })
 })
 
