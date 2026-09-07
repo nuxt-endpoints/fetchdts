@@ -20,7 +20,7 @@ const api: Route[] = [
 
 describe('compileRoutes', () => {
   it('preserves metadata fields registered by a compiler integration', () => {
-    const compiled = compileRoutes([{ routes: [{
+    const route = {
       segments: ['/api', '/users'],
       metadata: {
         GET: {
@@ -28,9 +28,20 @@ describe('compileRoutes', () => {
           contractType: '{ responses: { 200: User, 404: NotFound } }',
         },
       },
-    }] }])
+    } satisfies Route
+
+    const invalid: Route = {
+      segments: ['/invalid'],
+      metadata: { GET: {
+        // @ts-expect-error metadata fields must be registered explicitly
+        unknownType: 'string',
+      } },
+    }
+
+    const compiled = compileRoutes([{ routes: [route] }])
 
     expect(compiled.code).toContain('"contract": { responses: { 200: User, 404: NotFound } }')
+    void invalid
   })
 
   it('emits a module of types specialised to the routes', () => {

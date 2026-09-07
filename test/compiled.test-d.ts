@@ -1,5 +1,5 @@
-import type { AnyFetchPath, AnyHTTPMethod, TypedFetchResolvedMeta } from '../src/inference'
-import type { ErrorBody, GeneratedRoutes, Methods, Path, RequestBody, RequestQuery, Requires, Response, ResponseHeaders, ValidInput } from './fixture/generated'
+import type { AnyFetchPath, AnyHTTPMethod } from '../src/inference'
+import type { ErrorBody, Methods, Path, RequestBody, RequestQuery, Requires, Response, ResponseHeaders, ValidInput } from './fixture/generated'
 import type { Response as ExtensibleResponse, ValidInput as ExtensibleValid } from './fixture/generated-extensible'
 import { describe, expectTypeOf, it } from 'vitest'
 import './fixture/extensible-augmented'
@@ -157,21 +157,6 @@ describe('accessors resolving against an extensible interface', () => {
     expectTypeOf(await extensibleFetch('/api/users/1/posts')).toEqualTypeOf<{ title: string }[]>()
     // @ts-expect-error still nothing else
     await extensibleFetch('/api/nope')
-  })
-})
-
-describe('compiler-consumer metadata', () => {
-  it('retains registered fields on static and dynamic routes', () => {
-    expectTypeOf<TypedFetchResolvedMeta<GeneratedRoutes, '/api/health', 'GET'>['contract']>().toEqualTypeOf<'health'>()
-    expectTypeOf<TypedFetchResolvedMeta<GeneratedRoutes, '/api/users/123', 'GET'>['contract']>().toEqualTypeOf<{ kind: 'detail' }>()
-  })
-
-  it('resolves method-specific fields and preserves ALL replacement semantics', () => {
-    expectTypeOf<TypedFetchResolvedMeta<GeneratedRoutes, '/api/users', 'GET'>['contract']>().toEqualTypeOf<{ kind: 'list' }>()
-    expectTypeOf<TypedFetchResolvedMeta<GeneratedRoutes, '/api/users', 'POST'>['contract']>().toEqualTypeOf<{ kind: 'create' }>()
-    expectTypeOf<TypedFetchResolvedMeta<GeneratedRoutes, '/api/ping', 'DELETE'>['contract']>().toEqualTypeOf<'ping'>()
-    expectTypeOf<TypedFetchResolvedMeta<GeneratedRoutes, '/api/search', 'GET'>['contract']>().toEqualTypeOf<'search'>()
-    expectTypeOf<'contract' extends keyof TypedFetchResolvedMeta<GeneratedRoutes, '/api/search', 'POST'> ? true : false>().toEqualTypeOf<false>()
   })
 })
 

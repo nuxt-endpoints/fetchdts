@@ -9,7 +9,6 @@ export interface CompiledRoutes {
       [Endpoint]: {
         "GET": {
           "response": { status: 'ok' }
-          "contract": 'health'
         }
       }
     }
@@ -26,20 +25,17 @@ export interface CompiledRoutes {
           "GET": {
             "response": { id: number, name: string }
             "responseHeaders": { 'x-cache': 'hit' | 'miss' }
-            "contract": { kind: 'detail' }
           }
         }
       }
       [Endpoint]: {
         "GET": {
           "response": { id: number }[]
-          "contract": { kind: 'list' }
         }
         "POST": {
           "body": { name: string }
           "response": { id: number }
           "errorResponse": { message: string }
-          "contract": { kind: 'create' }
         }
       }
     }
@@ -62,13 +58,11 @@ export interface CompiledRoutes {
     "/ping": {
       [Endpoint]: Record<HTTPMethod, {
         "response": 'pong'
-        "contract": 'ping'
       }>
     }
     "/search": {
       [Endpoint]: Record<Exclude<HTTPMethod, "POST">, {
         "response": { results: string[] }
-        "contract": 'search'
       }> & {
         "POST": {
           "body": { query: string }

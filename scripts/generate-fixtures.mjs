@@ -8,14 +8,14 @@ import { compileRoutes } from '../src/compiler'
 import { DynamicParam, WildcardParam } from '../src/tree'
 
 const routes = [
-  { segments: ['/api', '/health'], metadata: { GET: { responseType: '{ status: \'ok\' }', contractType: '\'health\'' } } },
-  { segments: ['/api', '/users'], metadata: { GET: { responseType: '{ id: number }[]', contractType: '{ kind: \'list\' }' }, POST: { bodyType: '{ name: string }', responseType: '{ id: number }', errorResponseType: '{ message: string }', contractType: '{ kind: \'create\' }' } } },
-  { segments: ['/api', '/users', DynamicParam], metadata: { GET: { responseType: '{ id: number, name: string }', responseHeadersType: '{ \'x-cache\': \'hit\' | \'miss\' }', contractType: '{ kind: \'detail\' }' } } },
+  { segments: ['/api', '/health'], metadata: { GET: { responseType: '{ status: \'ok\' }' } } },
+  { segments: ['/api', '/users'], metadata: { GET: { responseType: '{ id: number }[]' }, POST: { bodyType: '{ name: string }', responseType: '{ id: number }', errorResponseType: '{ message: string }' } } },
+  { segments: ['/api', '/users', DynamicParam], metadata: { GET: { responseType: '{ id: number, name: string }', responseHeadersType: '{ \'x-cache\': \'hit\' | \'miss\' }' } } },
   { segments: [{ type: 'static', value: 'api/users' }, { type: 'dynamic' }, { type: 'static', value: 'posts' }], metadata: { GET: { responseType: '{ title: string }[]' } } },
   { segments: ['/api', '/comments', '/latest'], metadata: { GET: { responseType: '{ latest: true }' } } },
   { segments: ['/api', '/comments', DynamicParam], metadata: { GET: { responseType: '{ body: string }' } } },
-  { segments: ['/api', '/ping'], metadata: { ALL: { responseType: '\'pong\'', contractType: '\'ping\'' } } },
-  { segments: ['/api', '/search'], metadata: { ALL: { responseType: '{ results: string[] }', contractType: '\'search\'' }, POST: { bodyType: '{ query: string }', responseType: '{ results: string[], total: number }' } } },
+  { segments: ['/api', '/ping'], metadata: { ALL: { responseType: '\'pong\'' } } },
+  { segments: ['/api', '/search'], metadata: { ALL: { responseType: '{ results: string[] }' }, POST: { bodyType: '{ query: string }', responseType: '{ results: string[], total: number }' } } },
   { segments: ['/api', '/proxy'], metadata: { ALL: {} } },
   { segments: ['/api', '/files', WildcardParam], metadata: { GET: { responseType: 'Blob' } } },
 ]

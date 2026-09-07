@@ -474,36 +474,22 @@ segments is emitted as `'/'`.
 ### Consumer-owned metadata
 
 A compiler integration can register additional metadata fields without asking fetchdts to
-interpret them. Augment the compiler-owned registry once, then read the concrete field type from
-the generated route tree:
+interpret them:
 
 ```ts
-import type { TypedFetchResolvedMeta } from 'fetchdts'
-import type { Route } from 'fetchdts/compiler'
-
 declare module 'fetchdts/compiler' {
   interface RouteMetadataExtension {
     contract: unknown
   }
 }
 
-const route = {
+compileRoutes([{ routes: [{
   segments: ['/users'],
-  metadata: {
-    GET: {
-      responseType: 'User',
-      contractType: '{ cache: true }',
-    },
-  },
-} satisfies Route
-
-type Metadata<Routes> = TypedFetchResolvedMeta<Routes, '/users', 'GET'>
-type Contract<Routes> = Metadata<Routes> extends { contract: infer Value } ? Value : never
+  metadata: { GET: { contractType: 'Contract' } },
+}] }])
 ```
 
-The registry controls which `*Type` fields the compiler accepts; it does not constrain the emitted
-type source to `unknown`. Unknown fields remain type errors. Extension fields use the same path,
-method, `ALL`, ambiguity, and fallback resolution as built-in metadata.
+The generated endpoint metadata contains `contract: Contract`. Unknown fields remain type errors.
 
 Route segments, method names and metadata fields come from whatever generated them, so every lookup
 table built from them has a null prototype, a metadata value that is not a string is skipped, and an
