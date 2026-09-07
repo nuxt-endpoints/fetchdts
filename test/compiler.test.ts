@@ -6,7 +6,7 @@ import { DynamicParam, WildcardParam } from '../src/tree'
 
 declare module '../src/compiler' {
   interface RouteMetadataExtension {
-    contract: unknown
+    cachePolicy: unknown
   }
 }
 
@@ -25,7 +25,7 @@ describe('compileRoutes', () => {
       metadata: {
         GET: {
           responseType: 'User',
-          contractType: '{ responses: { 200: User, 404: NotFound } }',
+          cachePolicyType: '{ maxAge: 60 }',
         },
       },
     } satisfies Route
@@ -40,7 +40,7 @@ describe('compileRoutes', () => {
 
     const compiled = compileRoutes([{ routes: [route] }])
 
-    expect(compiled.code).toContain('"contract": { responses: { 200: User, 404: NotFound } }')
+    expect(compiled.code).toContain('"cachePolicy": { maxAge: 60 }')
     void invalid
   })
 

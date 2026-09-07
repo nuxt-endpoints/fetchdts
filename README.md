@@ -479,17 +479,17 @@ interpret them:
 ```ts
 declare module 'fetchdts/compiler' {
   interface RouteMetadataExtension {
-    contract: unknown
+    cachePolicy: unknown
   }
 }
 
 compileRoutes([{ routes: [{
   segments: ['/users'],
-  metadata: { GET: { contractType: '{ cache: true }' } },
+  metadata: { GET: { cachePolicyType: '{ maxAge: 60 }' } },
 }] }])
 ```
 
-The generated endpoint metadata contains `contract: { cache: true }`. Unknown fields remain type
+The generated endpoint metadata contains `cachePolicy: { maxAge: 60 }`. Unknown fields remain type
 errors.
 
 Route segments, method names and metadata fields come from whatever generated them, so every lookup

@@ -31,7 +31,7 @@ export type RouteSegment
  * ```ts
  * declare module 'fetchdts/compiler' {
  *   interface RouteMetadataExtension {
- *     contract: unknown
+ *     cachePolicy: unknown
  *   }
  * }
  * ```
