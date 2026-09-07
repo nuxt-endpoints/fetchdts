@@ -485,11 +485,12 @@ declare module 'fetchdts/compiler' {
 
 compileRoutes([{ routes: [{
   segments: ['/users'],
-  metadata: { GET: { contractType: 'Contract' } },
+  metadata: { GET: { contractType: '{ cache: true }' } },
 }] }])
 ```
 
-The generated endpoint metadata contains `contract: Contract`. Unknown fields remain type errors.
+The generated endpoint metadata contains `contract: { cache: true }`. Unknown fields remain type
+errors.
 
 Route segments, method names and metadata fields come from whatever generated them, so every lookup
 table built from them has a null prototype, a metadata value that is not a string is skipped, and an
